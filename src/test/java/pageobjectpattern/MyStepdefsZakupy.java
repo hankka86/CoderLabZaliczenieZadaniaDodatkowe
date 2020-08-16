@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 public class MyStepdefsZakupy {
     private static WebDriver driver;
+    private String valCuttingPrice;
 
     @Given("^otwieramy przegladarke i logujemy sie na konto Antonio Banderasa$")
     public void otwieramyPrzegladarkeILogujemySieNaKontoAntonioBanderasa() {
@@ -44,6 +45,7 @@ public class MyStepdefsZakupy {
         zakupy.ClickProdukt();
         double doubleRegularPrice=Double.parseDouble(zakupy.valueRegularPrice());
         double doubleCuttingPrice=Double.parseDouble(zakupy.valueCuttingPrice());
+        valCuttingPrice = zakupy.valueCuttingPrice();
         Assert.assertEquals((doubleRegularPrice * 0.8), doubleCuttingPrice, 0);
         //System.out.println(doubleRegularPrice+"   "+doubleCuttingPrice );
 
@@ -103,6 +105,7 @@ public class MyStepdefsZakupy {
     @Then("^klikamy w \"([^\"]*)\"$")
     public void klikamyW(String arg0) throws Throwable {
         Zakupy zakupy = new Zakupy(driver);
+        valCuttingPrice=zakupy.LastPrice();
         zakupy.ClickLastButton();
 
     }
@@ -120,6 +123,22 @@ public class MyStepdefsZakupy {
             e.printStackTrace();
         }
     }
+
+    @Then("^wchodzimy w historie zamówień i detale$")
+    public void wchodzimyWHistorieZamówieńIDetale() {
+        Zakupy zakupy = new Zakupy(driver);
+        zakupy.clickLogin();
+        zakupy.clickHistory();
+    }
+
+    @Then("^sprawdzamy czy zamówienie ma status \"([^\"]*)\", oraz czy kwota sie zgadza$")
+    public void sprawdzamyCzyZamówienieMaStatusOrazCzyKwotaSieZgadza(String arg0) throws Throwable {
+        Zakupy zakupy = new Zakupy(driver);
+        Assert.assertEquals("Awaiting check payment", zakupy.getOrderStatus());
+        Assert.assertTrue(valCuttingPrice.contains(zakupy.getActualPrice()));
+
+    }
+
 
     @And("^Zamykamy przeglądarkę$")
     public void zamykamyPrzeglądarkę() {

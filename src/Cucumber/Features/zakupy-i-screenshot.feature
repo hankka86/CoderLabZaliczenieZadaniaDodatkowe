@@ -12,5 +12,7 @@ Feature: Zadanie2
     Then wybieramy metodę płatnosci "Pay by Check"
     Then klikamy w "order with an obligation to pay"
     Then robimy screenshota
+    Then wchodzimy w historie zamówień i detale
+    Then sprawdzamy czy zamówienie ma status "Awaiting check payment", oraz czy kwota sie zgadza
     And Zamykamy przeglądarkę
 

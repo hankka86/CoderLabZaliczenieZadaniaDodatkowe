@@ -50,8 +50,10 @@ public class Zakupy {
     private WebElement ilosc;
 
     public void SetQuantity(String x) {
-        ilosc.clear();
-        ilosc.sendKeys(x);
+        WebDriverWait wait = new WebDriverWait(driver, 3);
+        WebElement iloscT = wait.until(ExpectedConditions.elementToBeClickable(ilosc));
+        iloscT.clear();
+        iloscT.sendKeys(x);
     }
 
     @FindBy(xpath=("//button[@data-button-action=\"add-to-cart\"]"))
@@ -133,18 +135,53 @@ public class Zakupy {
         lastClick.click();
     }
 
+    @FindBy(xpath = ("//dd"))
+    private WebElement lastPriceOrder;
+
+    public String  LastPrice() {
+       return lastPriceOrder.getText().replace("€", "");
+    }
+
+
+
     @FindBy(xpath = ("//span[@class='regular-price']"))
     private WebElement regularPrice;
+
     public String valueRegularPrice() {
-        return  regularPrice.getText().replace("€","");
+        return regularPrice.getText().replace("€", "");
     }
+
     @FindBy(xpath = ("//span[@itemprop='price']"))
     private WebElement cuttingPrice;
+
     public String valueCuttingPrice() {
-        return  cuttingPrice.getText().replace("€","");
+        return cuttingPrice.getText().replace("€", "");
     }
 
+    @FindBy(xpath = ("//a[@class='account']"))
+    private WebElement login;
 
+    public void clickLogin() {
+        login.click();
+    }
+    @FindBy(xpath = ("//a[@id='history-link']"))
+    private WebElement history;
+
+    public void clickHistory() {
+            history.click();
+    }
+    @FindBy(xpath = ("//span[@class='label label-pill bright']"))
+    private WebElement orderStatus;
+
+    public String getOrderStatus() {
+      return orderStatus.getText();
+    }
+    @FindBy(xpath = ("//td[@class='text-xs-right']"))
+    private WebElement priceStatus;
+
+    public String getActualPrice() {
+      return priceStatus.getText().replace("€", "");
+    }
 
 
 
